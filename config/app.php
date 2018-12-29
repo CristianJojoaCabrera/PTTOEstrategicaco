@@ -22,7 +22,7 @@ return [
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
+    | services your application utilizes. Set this in your ".env" file.
     |
     */
 
@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -147,8 +147,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-        Way\Generators\GeneratorsServiceProvider::class,
-        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -162,6 +160,23 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+	        class dataTable
+	    */
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        /* Collective
+        */
+        Collective\Html\HtmlServiceProvider::class,
+        /*fullCalendar
+         */
+        Maddhatter\LaravelFullcalendar\ServiceProvider::class,
+        /*
+         * PDF SNAPPY
+         */
+        Barryvdh\Snappy\ServiceProvider::class,
+        /* excel
+        */
+         Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -210,7 +225,17 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        /* aliases datatable */
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        /* aliases collective*/
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
+        'Active' => Watson\Active\ActiveServiceProvider::class,
+        /* PDF SNAPPY */
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        /*excel*/
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

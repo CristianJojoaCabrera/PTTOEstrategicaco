@@ -1,0 +1,18 @@
+.modal-headers {
+    padding: 10px 25px;
+    background-color: #f8ac59;
+    color: #FFFFFF;
+}
+#mdialTamanio{
+    width: 80% !important;
+}
+.invisible {
+  visibility: hidden;
+}
+.modal-body {
+    max-height: calc(125vh - 210px);
+    overflow-y: auto;
+}
+#containerDiv{
+margin : 0 auto;
+}
