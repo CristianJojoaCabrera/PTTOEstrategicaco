@@ -21,6 +21,15 @@ Route::group(['prefix' => 'funcionarity'],function(){
         ->name('funcionarity_index');
     Route::get('/funcionarity', 'FuncionarityController@funcionarity')
         ->name('funcionarity');
+    Route::post('/save_funcionarity', 'FuncionarityController@save_funcionarity')
+        ->name('save_funcionarity');
+    Route::get('/funcionarity_table', 'FuncionarityController@funcionarity_table')
+        ->name('funcionarity_table');
 
 });
+Route::group(['prefix' => 'PptoSales'],function(){
+    Route::get('/ppto_sale/{id_funcionarity}', 'PptoSalesController@ppto_sale')
+        ->name('ppto_sale');
+});
+;
 Auth::routes();

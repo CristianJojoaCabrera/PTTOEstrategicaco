@@ -18,7 +18,7 @@ class CreateFuncionaritiesTable extends Migration
             $table->date('date_admision')->nullable();
             $table->string('name');
             $table->string('last_name');
-            $table->integer('document_type')->unsigned();
+            $table->string('document_type');
             $table->string('document_number');
             $table->string('document_from');
             $table->string('address');
@@ -32,7 +32,8 @@ class CreateFuncionaritiesTable extends Migration
             $table->string('contract_type');
             $table->string('duration');
             $table->integer('number_contract')->unsigned();
-            $table->string('basic_salaric');
+            $table->string('basic_salary');
+            $table->string('commission');
             $table->timestamps();
         });
     }

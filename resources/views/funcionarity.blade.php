@@ -31,7 +31,7 @@
         <div class="row">
             <br>
             <div class="col-lg-12">
-                <form id="form" method="POST" action="" class="wizard-big">
+                <form id="form" method="POST" action="{{route('save_funcionarity')}}" class="wizard-big">
                     {{ csrf_field() }}
                     <h1>Formulario</h1>
                     <fieldset>
@@ -42,13 +42,13 @@
                                         <label>Fecha Ingreso</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <input type="text" name="date_admision" id="txtEventoDateStart" class="form-control input-sm">
+                                            <input type="text" name="date_admision" id="date_admision" class="form-control input-sm">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Cargo</label>
-                                        <select class="form-control" id="position">
-                                            <option value="1">Ejecutivo</option>
+                                        <select class="form-control" name ="position" id="position">
+                                            <option value="Ejecutivo">Ejecutivo</option>
                                         </select>
                                     </div>
                                 </div>
@@ -65,8 +65,8 @@
                                 <div class="row">
                                     <div class="form-group col-md-4">
                                         <label>Tipo de Identificación</label>
-                                        <select class="form-control" id="document_type">
-                                            <option value="1">CC</option>
+                                        <select class="form-control" name = "document_type" id="document_type">
+                                            <option value="CC">CC</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -116,10 +116,10 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label>Tipo Contrato</label>
-                                        <select class="form-control" id="contract_type">
-                                            <option value="1">Termino Fijo</option>
-                                            <option value="1">Termino Indefinido</option>
-                                            <option value="1">Prestación de servicios</option>
+                                        <select class="form-control"  name="contract_type" id="contract_type">
+                                            <option value="Termino Fijo">Termino Fijo</option>
+                                            <option value="Termino Indefinido">Termino Indefinido</option>
+                                            <option value="Prestación de servicios">Prestación de servicios</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -139,21 +139,21 @@
                                     <div class="form-group col-md-3">
                                         <label>mes-año</label>
                                         <select class="form-control" id="">
-                                            <option value="1">mes</option>
-                                            <option value="1">año</option>
+                                            <option value="mes">mes</option>
+                                            <option value="año">año</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label>Salario Basico</label>
-                                        <input type="text" class="form-control input-sm" name="basic_salaric" id="basic_salaric">
+                                        <input type="text" class="form-control input-sm" name="basic_salary" id="basic_salary">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Comisiones</label>
-                                        <select class="form-control" id="">
-                                            <option value="1">si</option>
-                                            <option value="1">no</option>
+                                        <select class="form-control" name="commission" id="commission">
+                                            <option value="si">si</option>
+                                            <option value="no">no</option>
                                         </select>
                                     </div>
                                 </div>

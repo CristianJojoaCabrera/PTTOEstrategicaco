@@ -4,7 +4,7 @@
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     <div>
-                        <img src="{{ asset('img/logoReferidosAjustado-02.png') }} "class="img-rounded"  alt="invitro_logo" style="width:100%">
+                        <img src="{{ asset('img/logo_estrategica.png') }} "class="img-rounded"  alt="invitro_logo" style="width:100%">
                     </div>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ Auth::user()->name }}</strong>
@@ -17,10 +17,12 @@
             <li >
                 <a href="{{ route('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Inicio</span></a>
             </li>
-            <li class="{{active(['auspiciadores'])}}" >
+            <li class="{{active(['funcionarity*'])}}" >
                 <a href="{{route('funcionarity_index')}}"><i class="fa fa-users"></i> <span class="nav-label">Personal</span></a>
             </li>
-
+            <li class="{{active(['ppto_*'])}}" >
+                <a href="ppto_index"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Ppto Ventas</span></a>
+            </li>
 
         </ul>
     </div>

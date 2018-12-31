@@ -86,7 +86,33 @@
                         "next": "Siguiente",
                         "previous": "Anterior"
                     }
-                }
+                },
+                'proccesing':true,
+                'serverSide':true,
+                'ajax':  '{{ route('funcionarity_table') }}',
+                'columns' : [
+                    {data: 'name'},
+                    {data: 'last_name'},
+                    {data: 'document_type'},
+                    {data: 'document_number'},
+                    {data: 'phone'},
+                    {data: 'position'},
+                    {data: 'sell'},
+                    {
+                        defaultContent:
+                            '<div class="align-content-center"><a title="Editar Costo" href="javascript:;" class="btn btn-sm btn-warning edit"><i class="glyphicon glyphicon-pencil"></i></a>',
+                        data: 'action',
+                        name: 'action',
+                        title: 'Acciones',
+                        orderable: false,
+                        searchable: false,
+                        exportable: false,
+                        printable: false,
+                        className: 'text-center',
+                        render: null,
+                        responsivePriority: 2
+                    }
+                ]
             });
 
 

@@ -22,8 +22,8 @@
     <div class="row">
 
         <div class="col-md-6 text-center">
-            <img src="{{ asset('img/logoReferidosAjustado-02.png') }}" class="img-responsive">
-            <h2 class="font-bold">Bienvenido a Referidos</h2>
+            <img src="{{ asset('img/logo_estrategica.png') }}" class="img-responsive">
+            <h2 class="font-bold">Bienvenido</h2>
 
         </div>
         <div class="col-md-6">
