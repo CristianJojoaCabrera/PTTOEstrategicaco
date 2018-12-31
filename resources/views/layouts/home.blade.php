@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 
     @include('app.head')
-    <body class="fixed-navigation">
+    <body class="md-skin">
         <div id="wrapper">
             @include('app.vertical-menu')
             <div id="page-wrapper" class="gray-bg">

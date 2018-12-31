@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            'estados','users'
+            'users'
         ]);
 
         //$this->call(EstadoSeeder::class);
