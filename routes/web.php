@@ -30,6 +30,9 @@ Route::group(['prefix' => 'funcionarity'],function(){
 Route::group(['prefix' => 'PptoSales'],function(){
     Route::get('/ppto_sale/{id_funcionarity}', 'PptoSalesController@ppto_sale')
         ->name('ppto_sale');
+    Route::get('/criteria_table', 'PptoSalesController@criteria_table')
+        ->name('criteria_table');
+
 });
 ;
 Auth::routes();

@@ -172,8 +172,7 @@
     </div>
 @endsection
 @section('javascript')
-    <!-- iCheck -->
-    <script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
+
     <!-- Steps -->
     <script src="{{ asset('js/plugins/steps/jquery.steps.min.js') }}"></script>
     <!--sweet-->
