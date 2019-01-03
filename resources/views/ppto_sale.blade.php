@@ -21,52 +21,72 @@
         </div>
     </div>
     <br>
-    <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="ibox-content m-b-sm border-bottom">
+        <div data-toggle="buttons" class="btn-group">
+            <label class="btn btn-sm btn-white active createPpto">
+                <input type="radio" id="option1" name="options">
+                Crear PTTO
+            </label>
+            <label class="btn btn-sm btn-white editPpto">
+                <input type="radio" id="option2" name="options">
+                Editar PTTO
+            </label>
+            <br>
+        </div>
+
+        <div class="row">
+            <br>
+            <div class="form-group col-lg-4">
+                <label>Cargo</label>
+                <input type="text" class="form-control input-sm" name="position" id="position" value = "{{$funcionarity->position}}">
+            </div>
+            <div class="form-group col-lg-4">
+                <label>Nombres</label>
+                <input type="text" class="form-control input-sm" name="name" id="name" value = "{{$funcionarity->name}}">
+            </div>
+            <div class="form-group col-lg-4">
+                <label>Tipo Contrato</label>
+                <input type="text" class="form-control input-sm" name="contract_type" id="contract_type" value="{{$funcionarity->contract_type}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label>Fecha Ingreso</label>
+                <input type="text" class="form-control input-sm" name="date_admision" id="date_admision" value="{{$funcionarity->date_admision}}">
+            </div>
+            <div class="form-group col-lg-4">
+                <label>Tiempo Contrato</label>
+                <input type="text" class="form-control input-sm" name="duration" id="duration" value="{{$funcionarity->duration}}">
+            </div>
+            <div class="form-group col-lg-4">
+                <label>Salario</label>
+                <input type="text" class="form-control input-sm" name="basic_salary" id="basic_salary" value="{{$funcionarity->basic_salary}}">
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <div class="ibox-content m-b-sm border-bottom">
+        <div class="row">
+            <div class="form-group col-md-4 col-md-offset-2">
+                <label>Fecha Ppto</label>
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" name="date_ppto_sale" id="date_ppto_sale" class="form-control input-sm">
+                </div>
+            </div>
+            <div class="form-group col-md-2 col-md-offset-1">
+                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <a title="Aplica Ppto" class="btn btn-sm btn-primary sale">Ingresar<i class=""></i></a>
+                <a title="Finalizar Ppto" class="btn btn-sm btn-success submit hidden">Finalizar<i class=""></i></a>
+            </div>
+        </div>
         <div class="row">
             <br>
             <div class="col-lg-12">
-                <div class="row">
-                    <div class="form-group col-lg-4">
-                        <label>Cargo</label>
-                        <input type="text" class="form-control input-sm" name="position" id="position" value = "{{$funcionarity->position}}">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label>Nombres</label>
-                        <input type="text" class="form-control input-sm" name="name" id="name" value = "{{$funcionarity->name}}">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label>Tipo Contrato</label>
-                        <input type="text" class="form-control input-sm" name="contract_type" id="contract_type" value="{{$funcionarity->contract_type}}">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-4">
-                        <label>Fecha Ingreso</label>
-                        <input type="text" class="form-control input-sm" name="date_admision" id="date_admision" value="{{$funcionarity->date_admision}}">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label>Tiempo Contrato</label>
-                        <input type="text" class="form-control input-sm" name="duration" id="duration" value="{{$funcionarity->duration}}">
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label>Salario</label>
-                        <input type="text" class="form-control input-sm" name="basic_salary" id="basic_salary" value="{{$funcionarity->basic_salary}}">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-4 col-md-offset-2">
-                        <label>Fecha Ppto</label>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" name="date_ppto_sale" id="date_ppto_sale" class="form-control input-sm">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-2 col-md-offset-1">
-                        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                        <a title="Aplica Ppto" class="btn btn-sm btn-primary sale">Ingresar<i class=""></i></a>
-                        <a title="Finalizar Ppto" class="btn btn-sm btn-success submit hidden">Finalizar<i class=""></i></a>
-                    </div>
-                </div>
+
                 <div class="table-responsive col-md-10 col-md-offset-1">
                     <table id="tblCriteria" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
@@ -125,7 +145,7 @@
                 radioClass: 'iradio_square-green'
             });
             $('.sale').on('click',function(){
-                var date = $('#date_ppto_sale').val();
+                var date = $('#date_ppto_sale').val()+'-01';
                 var funcionarity_id = '{{$funcionarity->id}}';
                 var route = '{{route('exist_date_ptto_sale')}}'+'/'+funcionarity_id+'/'+date;
                 $.ajax({
@@ -135,7 +155,7 @@
                     },
                     success: function (response, xhr, request) {
                         if(response){
-
+                            swal("", "Esta Fecha ya existe.", "info");
                         }else{
                             $('.sale').addClass('hidden');
                             $('.submit').removeClass('hidden');
@@ -173,7 +193,7 @@
                 var formDatas = new FormData();
                 formDatas.append('funcionarity_id',funcionarity_id);
                 formDatas.append('objecDataCriteria',JSON.stringify(objecDataCriteria));
-                formDatas.append('date_ppto_sale',$('#date_ppto_sale').val());
+                formDatas.append('date_ppto_sale',$('#date_ppto_sale').val()+'-01');
                 $.ajax({
                     url: route,
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -214,6 +234,12 @@
                     }
                 });
 
+            });
+
+            $('.editPpto').on('click',function(){
+                console.log('editar');
+                var route = '{{route('ppto_sale_edit',$funcionarity->id)}}';
+                $("#content-ajax").load(route);
             });
 
         });

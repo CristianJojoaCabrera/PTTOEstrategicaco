@@ -32,6 +32,10 @@ Route::group(['prefix' => 'PptoSales'],function(){
         ->name('ppto_sale');
     Route::post('/save_criteria_funcionarity', 'PptoSalesController@save_criteria_funcionarity')
         ->name('save_criteria_funcionarity');
+    Route::get('/ppto_sale_edit/{id_funcionarity?}', 'PptoSalesController@ppto_sale_edit')
+        ->name('ppto_sale_edit');
+    Route::get('/table_ppto_funcionarity/{id_funcionarity?}/{date?}', 'PptoSalesController@table_ppto_funcionarity')
+        ->name('table_ppto_funcionarity');
 
 });
 Route::group(['prefix' => 'sale'],function(){
