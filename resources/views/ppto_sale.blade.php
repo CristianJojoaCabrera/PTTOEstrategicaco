@@ -45,7 +45,7 @@
                         <input type="text" class="form-control input-sm" name="date_admision" id="date_admision" value="{{$funcionarity->date_admision}}">
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>Tiempo Contrato</label>devengado
+                        <label>Tiempo Contrato</label>
                         <input type="text" class="form-control input-sm" name="duration" id="duration" value="{{$funcionarity->duration}}">
                     </div>
                     <div class="form-group col-lg-4">
@@ -58,44 +58,14 @@
                         <label>Fecha Ppto</label>
                         <div class="input-group date">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" name="date_admision" id="date_admision" class="form-control input-sm">
+                            <input type="text" name="date_ppto_sale" id="date_ppto_sale" class="form-control input-sm">
                         </div>
                     </div>
                     <div class="form-group col-md-2 col-md-offset-1">
                         <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <a title="Aplica Ppto" class="btn btn-sm btn-primary sale">Ingresar<i class=""></i></a>
+                        <a title="Finalizar Ppto" class="btn btn-sm btn-success submit hidden">Finalizar<i class=""></i></a>
                     </div>
-                </div>
-                <div class="col-md-10 col-md-offset-1">
-                    <table id="tblLocals" class="table table-striped table-bordered table-hover dataTables-example" >
-                        <thead>
-                        <tr>
-                            <th>Criterio</th>
-                            <th>Porcentaje</th>
-                            <th>Meta</th>
-                            <th>Check</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($criterias as $criteria)
-                            <tr>
-                                <td>
-                                    <input size="35" name="txtLocalName[]" value="{{$criteria->name}}" disabled>
-                                </td>
-                                <td>
-                                    <input  name="txtLocalCity[]" value="">
-                                </td>
-                                <td>
-                                    <input  name="txtLocalCity[]" value="">
-                                </td>
-                                <td>
-                                    <div align="center" class="i-checks"><input type="checkbox" value=""></div>
-
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
                 </div>
                 <div class="table-responsive col-md-10 col-md-offset-1">
                     <table id="tblCriteria" class="table table-striped table-bordered table-hover dataTables-example" >
@@ -108,7 +78,23 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @foreach($criterias as $criteria)
+                            <tr id="tr{{$criteria->id}}">
+                                <td>
+                                    <input size="35" id ="criteria{{$criteria->id}}" value="{{$criteria->name}}" disabled>
+                                </td>
+                                <td>
+                                    <input class="inputCriteria" id ="percentage{{$criteria->id}}" name="percentage{{$criteria->id}}" value="">
+                                </td>
+                                <td>
+                                    <input class="inputCriteria" id ="goal{{$criteria->id}}" name="goal{{$criteria->id}}" value="">
+                                </td>
+                                <td>
+                                    <div align="center" class="i-checks"><input class="checkCriteria" data-id_checkCriteria='{{$criteria->id}}' type="checkbox" id="check{{$criteria->id}}" value=""></div>
 
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -128,49 +114,106 @@
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function(){
+            var objecDataCriteria=[] ;
             $('.input-group.date').datepicker({
-                format: "mm-yyyy",
+                format: "yyyy-mm",
                 viewMode: "months",
                 minViewMode: "months"
             });
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
+                radioClass: 'iradio_square-green'
             });
-            var tblCriteria = $('#tblCriteria').DataTable({
+            $('.sale').on('click',function(){
+                var date = $('#date_ppto_sale').val();
+                var funcionarity_id = '{{$funcionarity->id}}';
+                var route = '{{route('exist_date_ptto_sale')}}'+'/'+funcionarity_id+'/'+date;
+                $.ajax({
+                    url: route,
+                    type: 'GET',
+                    beforeSend: function () {
+                    },
+                    success: function (response, xhr, request) {
+                        if(response){
 
-                responsive: true,
-                language: {
-                    "decimal": "",
-                    "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                    "infoPostFix": "",
-                    "thousands": ",",
-                    "lengthMenu": "Mostrar _MENU_ Entradas",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "zeroRecords": "Sin resultados encontrados",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Ultimo",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
+                        }else{
+                            $('.sale').addClass('hidden');
+                            $('.submit').removeClass('hidden');
+
+                        }
+                    },
+                    error: function (response, xhr, request) {
+
                     }
-                },
-                "bPaginate": false,
-                "searching": false,
-                'proccesing':true,
-                'serverSide':true,
-                'ajax':  '{{ route('criteria_table') }}',
-                'columns' : [
-                    {data: 'name'},
-                    {data: 'percentage_funcionarity'},
-                    {data: 'goal_funcionarity'},
-                    {data: 'action'}
-                ]
+                });
+
+            });
+
+            $('.checkCriteria').on('ifChecked', function(event){
+                var idCriteria = $(this).data('id_checkcriteria');
+                var goal = '#goal'+idCriteria;
+                goal = $(goal).val();
+                var percentage = '#percentage'+idCriteria;
+                    percentage = $(percentage).val();
+                objecDataCriteria.push({
+                    idCriteria :idCriteria ,
+                    percentage :percentage,
+                    budget :goal
+
+                });
+            });
+            $('.checkCriteria').on('ifUnchecked', function(event){
+                var idSubservicio = $(this).data('id_checkcriteria');
+            });
+            $('.submit').on('click',function(){
+                var funcionarity_id = '{{$funcionarity->id}}';
+                var route = '{{ route('save_criteria_funcionarity') }}';
+                var typeAjax = 'POST';
+                var async = async || false;
+                var formDatas = new FormData();
+                formDatas.append('funcionarity_id',funcionarity_id);
+                formDatas.append('objecDataCriteria',JSON.stringify(objecDataCriteria));
+                formDatas.append('date_ppto_sale',$('#date_ppto_sale').val());
+                $.ajax({
+                    url: route,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    cache: false,
+                    type: typeAjax,
+                    contentType: false,
+                    data: formDatas,
+                    processData: false,
+                    async: async,
+                    beforeSend: function () {
+                    },
+                    success: function (response, xhr, request){
+                        swal({
+                                title: "",
+                                text: "Se ha registrado el ppto venta, desea agregar otro",
+                                type: "success",
+                                showCancelButton: true,
+                                confirmButtonClass: "btn-success",
+                                confirmButtonText: "Si",
+                                cancelButtonText: "No",
+                                closeOnConfirm: true,
+                                closeOnCancel: true
+                            },
+                            function(isConfirm) {
+                                if (isConfirm) {
+                                    $(".inputCriteria").val('');
+                                    $('.submit').addClass('hidden');
+                                    $('.sale').removeClass('hidden');
+
+                                } else {
+
+                                }
+                            }
+                        );
+                    },
+                    error: function (response, xhr, request) {
+                        console.log('no hecho');
+                    }
+                });
+
             });
 
         });

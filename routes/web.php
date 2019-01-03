@@ -30,9 +30,16 @@ Route::group(['prefix' => 'funcionarity'],function(){
 Route::group(['prefix' => 'PptoSales'],function(){
     Route::get('/ppto_sale/{id_funcionarity}', 'PptoSalesController@ppto_sale')
         ->name('ppto_sale');
-    Route::get('/criteria_table', 'PptoSalesController@criteria_table')
-        ->name('criteria_table');
+    Route::post('/save_criteria_funcionarity', 'PptoSalesController@save_criteria_funcionarity')
+        ->name('save_criteria_funcionarity');
 
 });
-;
+Route::group(['prefix' => 'sale'],function(){
+    Route::get('/exist_date_ptto_sale/{id_funcionarity?}/{date?}','SalesController@exist_date_ptto_sale')
+        ->name('exist_date_ptto_sale');
+
+
+});
+
+
 Auth::routes();

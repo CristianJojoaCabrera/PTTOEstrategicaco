@@ -17,7 +17,7 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             $table->integer('funcionarity_id')->unsigned();
             $table->foreign('funcionarity_id')->references('id')->on('funcionarities');
-            $table->date('date')->unique();
+            $table->string('date')->unique();
             $table->timestamps();
         });
     }
