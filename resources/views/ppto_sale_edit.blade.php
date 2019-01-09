@@ -1,4 +1,36 @@
-    <div class="row wrapper border-bottom white-bg page-heading">
+
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content animated bounceInDown">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLongTitle">Editar Campos presupuesto - ejecución</h2>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <br>
+                    <div class="form-group col-lg-4">
+                        <label>Porcentaje</label>
+                        <input type="text" class="form-control input-sm" name="percentage_edit" id="percentage_edit" value = "">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Presupuesto</label>
+                        <input type="text" class="form-control input-sm" name="budget_edit" id="budget_edit" value = "">
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Ejecución</label>
+                        <input type="text" class="form-control input-sm" name="execution_edit" id="execution_edit" value = "">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id = "save_data_edit_ppto">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Presupuesto de Ventas</h2>
             <ol class="breadcrumb">
@@ -24,7 +56,6 @@
             </label>
             <br>
         </div>
-
         <div class="row">
             <br>
             <div class="form-group col-lg-4">
@@ -73,9 +104,14 @@
                     <a title="Consultar Ppto" class="btn btn-sm btn-primary consult">Consultar<i class=""></i></a>
                 </div>
             </div>
-            <br>
             <div class="table-responsive col-lg-12">
-                <table id="tblPptoFuncionarity" class="table table-striped table-bordered table-hover dataTables-example" >
+                <br>
+                <a title="Agregar Criterio" class="btn btn-sm btn-primary show_table_criteria">Agregar Criterio<i class=""></i></a>
+                <a title="Tabla ppto" class="btn btn-sm btn-success show_table_ppto hidden">Mostrar tabla PPTO<i class=""></i></a>
+
+                <br><br>
+                <div id ='tblPptoFuncionarityDiv'>
+                    <table id="tblPptoFuncionarity" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
                             <th>Criterio</th>
@@ -86,19 +122,54 @@
                             <th>Acumulado Ejecución</th>
                             <th>Cumplimiento</th>
                             <th>Acumulado Cumplimiento</th>
-                            <th>Devengado</th>
+                            <th>Monto a pagar</th>
                             <th>Acción</th>
                         </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
+                </div>
+                <table id="tblCriteria_edit" class="table table-striped table-bordered table-hover dataTables-example hidden" >
+                    <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Porcentaje</th>
+                        <th>Meta</th>
+                        <th>Check</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($criterias as $criteria)
+                        <tr id="tredit{{$criteria->id}}">
+                            <td>
+                                <input size="35" id ="criteriaedit{{$criteria->id}}" value="{{$criteria->name}}" disabled>
+                            </td>
+                            <td>
+                                <input class="inputCriteria" id ="percentageedit{{$criteria->id}}" name="percentageedit{{$criteria->id}}" value="">
+                            </td>
+                            <td>
+                                <input class="inputCriteria" id ="goaledit{{$criteria->id}}" name="goaledit{{$criteria->id}}" value="">
+                            </td>
+                            <td>
+                                <div align="center" class="i-checksedit"><input class="checkCriteriaedit" data-id_checkCriteriaedit='{{$criteria->id}}' type="checkbox" id="checkedit{{$criteria->id}}" value=""></div>
+
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                <div class="button_submit_edit hidden" style="text-align:right; width:100%; padding:0;">
+                    <a title="Finalizar ppto" class="btn btn-sm btn-success submit_edit">Finalizar<i class=""></i></a>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         $(document).ready(function(){
+            var id_ppto;
+            var objecDataCriteriaedit=[];
             var tblPptoFuncionarity =
                 $('#tblPptoFuncionarity').DataTable({
                     pageLength: 25,
@@ -161,23 +232,14 @@
                             {data: 'budget'},
                             {data: 'accumulated'},
                             {data: 'execution'},
-                            {data: 'accumulated_budget'},
+                            {data: 'accumulated_execution'},
                             {data: 'execution_percentage'},
                             {data: 'accumulated_percentage'},
                             {data: 'total_accrued'},
-                            {
-                                defaultContent:
-                                    '<div class="align-content-center"><a title="" href="javascript:;" class="btn btn-warning btn-sm asignar"><i class="glyphicon glyphicon-pencil"></i></a>',
-                                data: 'action',
-                                name: 'action',
-                                title: 'Acciones',
+                            {   data:'Accion',
+                                width:'8%',
                                 orderable: false,
-                                searchable: false,
-                                exportable: false,
-                                printable: false,
-                                className: 'text-center',
-                                render: null,
-                                responsivePriority: 2
+                                searchable: false
                             }
                         ]
                     });
@@ -189,27 +251,104 @@
                 $tr = $(this).closest('tr');
                 var dataTable = tblPptoFuncionarity.row($tr).data();
                 console.log(dataTable);
-                swal({
-                        title: "Ejecución",
-                        text: "Ejecución Mes:",
-                        type: "input",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        confirmButtonText: "Guardar",
-                        cancelButtonText: "Salir",
-                        animation: "slide-from-top",
-                        inputPlaceholder: "Ejecución Mes"
+                id_ppto = dataTable.id;
+                $('#percentage_edit').val(dataTable.percentage);
+                $('#budget_edit').val(dataTable.budget);
+                $('#execution_edit').val(dataTable.execution);
+                $('#modal').modal('toggle');
+            });
+            $('#save_data_edit_ppto').on('click',function(){
+                var route = '{{ route('save_data_edit_ppto') }}';
+                var typeAjax = 'POST';
+                var async = async || false;
+                var formDatas = new FormData();
+                var percentage = $('#percentage_edit').val();
+                percentage = percentage.replace('%','');
+                console.log(percentage);
+                console.log($('#percentage_edit').val());
+                formDatas.append('percentage', percentage);
+                formDatas.append('budget', $('#budget_edit').val());
+                formDatas.append('execution',$('#execution_edit').val());
+                formDatas.append('id_ppto',id_ppto);
+                $.ajax({
+                    url: route,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    cache: false,
+                    type: typeAjax,
+                    contentType: false,
+                    data: formDatas,
+                    processData: false,
+                    async: async,
+                    beforeSend: function () {
+
                     },
-                    function(inputValue){
-                        if (inputValue === false) return false;
-                        if (inputValue === "") {
-                            swal.showInputError("Error");
-                            return false;
-                        }
-                    });
+                    success: function (response, xhr, request) {
+
+                    console.log(response);
+                        tblPptoFuncionarity.ajax.reload();
+                        $('#modal').modal('toggle');
+                    },
+                    error: function (response, xhr, request) {
+
+
+                    }
+                });
+            });
+            $('.show_table_criteria').on('click',function(){
+                $("#tredit1,#tredit2,#tredit3,#tredit4,#tredit5,#tredit6,#tredit7").addClass('hidden');
+
+                var date_id = $('#date_table_ppto').val();
+                var route = '{{route('list_criteria_date_without_check')}}'+'/'+date_id;
+                $.ajax({
+                    url: route,
+                    type: 'GET',
+                    beforeSend: function () {
+                    },
+                    success: function (response, xhr, request) {
+                        console.log(response);
+                        $(response).each(function (key, value) {
+                            var tredit = "#tredit" + value.id;
+                            $(tredit).removeClass('hidden');
+                        });
+                        $('.show_table_ppto').removeClass('hidden');
+                        $('.show_table_criteria').addClass('hidden');
+                        $('#tblCriteria_edit').removeClass('hidden');
+                        $('#tblPptoFuncionarityDiv').addClass('hidden');
+                        $('.button_submit_edit').removeClass('hidden');
+                    },
+                    error: function (response, xhr, request) {
+
+                    }
+                });
+            });
+            $('.show_table_ppto').on('click',function(){
+                $('.show_table_criteria').removeClass('hidden');
+                $('.show_table_ppto').addClass('hidden');
+                $('#tblPptoFuncionarityDiv').removeClass('hidden');
+                $('#tblCriteria_edit').addClass('hidden');
+                $('.button_submit_edit').addClass('hidden');
 
             });
-
+            $('.checkCriteriaedit').on('ifChecked', function(event){
+                var idCriteria = $(this).data('id_checkcriteriaedit');
+                var goal = '#goaledit'+idCriteria;
+                goal = $(goal).val();
+                var percentage = '#percentageedit'+idCriteria;
+                percentage = $(percentage).val();
+                objecDataCriteriaedit.push({
+                    idCriteria :idCriteria ,
+                    percentage :percentage,
+                    budget :goal
+                });
+                console.log(objecDataCriteriaedit);
+            });
+            $('.checkCriteriaedit').on('ifUnchecked', function(event){
+                var id_checkcriteria = $(this).data('id_checkcriteriaedit');
+                objecDataCriteriaedit =   objecDataCriteriaedit.filter(function(idCriteria) {
+                    return idCriteria.idCriteria != id_checkcriteria;
+                });
+                console.log(objecDataCriteriaedit);
+            });
             $('#txtQuota,#quota,#serviceValue').on("keyup",function( event ){
                 var selection = window.getSelection().toString();
                 if ( selection !== '' ) return;
@@ -221,6 +360,10 @@
                 $this.val( function() {
                     return ( input === 0 ) ? "" : input.toLocaleString( "es" );
                 } );
+            });
+            $('.i-checksedit').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
             });
         });
     </script>

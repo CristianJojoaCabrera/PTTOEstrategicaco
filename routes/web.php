@@ -36,7 +36,10 @@ Route::group(['prefix' => 'PptoSales'],function(){
         ->name('ppto_sale_edit');
     Route::get('/table_ppto_funcionarity/{id_funcionarity?}/{date?}', 'PptoSalesController@table_ppto_funcionarity')
         ->name('table_ppto_funcionarity');
-
+    Route::post('/save_data_edit_ppto', 'PptoSalesController@save_data_edit_ppto')
+        ->name('save_data_edit_ppto');
+    Route::get('/list_criteria_date_without_check/{date?}', 'PptoSalesController@list_criteria_date_without_check')
+        ->name('list_criteria_date_without_check');
 });
 Route::group(['prefix' => 'sale'],function(){
     Route::get('/exist_date_ptto_sale/{id_funcionarity?}/{date?}','SalesController@exist_date_ptto_sale')

@@ -20,10 +20,10 @@ class CreatePptoSalesTable extends Migration
             $table->integer('criteria_id')->unsigned();
             $table->foreign('criteria_id')->references('id')->on('criterias');
             $table->string('percentage');
-            $table->string('budget');
+            $table->string('budget')->default('0');
             $table->string('accumulated');
-            $table->string('execution');
-            $table->string('accumulated_budget');
+            $table->string('execution')->default('0');
+            $table->string('accumulated_execution');
             $table->string('execution_percentage');
             $table->string('accumulated_percentage');
             $table->string('total_accrued');

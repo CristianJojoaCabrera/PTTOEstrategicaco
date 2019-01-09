@@ -159,14 +159,11 @@
                         }else{
                             $('.sale').addClass('hidden');
                             $('.submit').removeClass('hidden');
-
                         }
                     },
                     error: function (response, xhr, request) {
-
                     }
                 });
-
             });
 
             $('.checkCriteria').on('ifChecked', function(event){
@@ -179,11 +176,15 @@
                     idCriteria :idCriteria ,
                     percentage :percentage,
                     budget :goal
-
                 });
+                console.log(objecDataCriteria);
             });
             $('.checkCriteria').on('ifUnchecked', function(event){
-                var idSubservicio = $(this).data('id_checkcriteria');
+                var id_checkcriteria = $(this).data('id_checkcriteria');
+                objecDataCriteria =   objecDataCriteria.filter(function(idCriteria) {
+                    return idCriteria.idCriteria != id_checkcriteria;
+                });
+                console.log(objecDataCriteria);
             });
             $('.submit').on('click',function(){
                 var funcionarity_id = '{{$funcionarity->id}}';
@@ -206,34 +207,19 @@
                     beforeSend: function () {
                     },
                     success: function (response, xhr, request){
-                        swal({
-                                title: "",
-                                text: "Se ha registrado el ppto venta, desea agregar otro",
-                                type: "success",
-                                showCancelButton: true,
-                                confirmButtonClass: "btn-success",
-                                confirmButtonText: "Si",
-                                cancelButtonText: "No",
-                                closeOnConfirm: true,
-                                closeOnCancel: true
-                            },
-                            function(isConfirm) {
-                                if (isConfirm) {
-                                    $(".inputCriteria").val('');
-                                    $('.submit').addClass('hidden');
-                                    $('.sale').removeClass('hidden');
-
-                                } else {
-
-                                }
-                            }
-                        );
+                        swal("Registrado", "Se ha registrado el ppto venta.", "success");
+                        $('.checkCriteria').iCheck('uncheck');
+                        $(".inputCriteria").val('');
+                        $("#date_ppto_sale").val('');
+                        $('.submit').addClass('hidden');
+                        $('.sale').removeClass('hidden');
+                        objecDataCriteria=[]
                     },
                     error: function (response, xhr, request) {
-                        console.log('no hecho');
+                        swal("Error", "algo salio mal.", "error");
+                        objecDataCriteria=[]
                     }
                 });
-
             });
 
             $('.editPpto').on('click',function(){
