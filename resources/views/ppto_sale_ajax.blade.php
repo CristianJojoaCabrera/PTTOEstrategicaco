@@ -1,11 +1,3 @@
-@extends('layouts.home')
-
-@section('title', 'Inicio')
-@section('css')
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
-@endsection
-@section('content')
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
@@ -33,7 +25,6 @@
             </label>
             <br>
         </div>
-
         <div class="row">
             <br>
             <div class="form-group col-lg-4">
@@ -63,10 +54,6 @@
                 <input type="text" class="form-control input-sm" name="basic_salary" id="basic_salary" value="{{$funcionarity->basic_salary}}">
             </div>
         </div>
-
-
-
-
     </div>
     <div class="ibox-content m-b-sm border-bottom">
         <div class="row">
@@ -121,17 +108,6 @@
             </div>
         </div>
     </div>
-
-@endsection
-@section('javascript')
-
-    <!-- Toastr script -->
-    <script src="{{ asset('js/plugins/toastr/toastr.min.js')}}"></script>
-    <!--sweet-->
-    <script src="{{ asset('js/plugins/sweetalert/sweetalert.min.js') }}"></script>
-    <!-- iCheck -->
-    <script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function(){
             var objecDataCriteria=[] ;
@@ -171,7 +147,7 @@
                 var goal = '#goal'+idCriteria;
                 goal = $(goal).val();
                 var percentage = '#percentage'+idCriteria;
-                    percentage = $(percentage).val();
+                percentage = $(percentage).val();
                 objecDataCriteria.push({
                     idCriteria :idCriteria ,
                     percentage :percentage,
@@ -254,4 +230,3 @@
 
         });
     </script>
-@endsection

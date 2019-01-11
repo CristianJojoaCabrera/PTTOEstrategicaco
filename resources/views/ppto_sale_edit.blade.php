@@ -146,10 +146,10 @@
                                 <input size="35" id ="criteriaedit{{$criteria->id}}" value="{{$criteria->name}}" disabled>
                             </td>
                             <td>
-                                <input class="inputCriteria" id ="percentageedit{{$criteria->id}}" name="percentageedit{{$criteria->id}}" value="">
+                                <input class="inputCriteriaeditPercen" id ="percentageedit{{$criteria->id}}" name="percentageedit{{$criteria->id}}" value="">
                             </td>
                             <td>
-                                <input class="inputCriteria" id ="goaledit{{$criteria->id}}" name="goaledit{{$criteria->id}}" value="">
+                                <input class="inputCriteriaeditGoal" id ="goaledit{{$criteria->id}}" name="goaledit{{$criteria->id}}" value="">
                             </td>
                             <td>
                                 <div align="center" class="i-checksedit"><input class="checkCriteriaedit" data-id_checkCriteriaedit='{{$criteria->id}}' type="checkbox" id="checkedit{{$criteria->id}}" value=""></div>
@@ -298,6 +298,7 @@
                 $("#tredit1,#tredit2,#tredit3,#tredit4,#tredit5,#tredit6,#tredit7").addClass('hidden');
 
                 var date_id = $('#date_table_ppto').val();
+                console.log(date_id);
                 var route = '{{route('list_criteria_date_without_check')}}'+'/'+date_id;
                 $.ajax({
                     url: route,
@@ -308,6 +309,7 @@
                         console.log(response);
                         $(response).each(function (key, value) {
                             var tredit = "#tredit" + value.id;
+                            console.log(tredit);
                             $(tredit).removeClass('hidden');
                         });
                         $('.show_table_ppto').removeClass('hidden');
@@ -327,7 +329,6 @@
                 $('#tblPptoFuncionarityDiv').removeClass('hidden');
                 $('#tblCriteria_edit').addClass('hidden');
                 $('.button_submit_edit').addClass('hidden');
-
             });
             $('.checkCriteriaedit').on('ifChecked', function(event){
                 var idCriteria = $(this).data('id_checkcriteriaedit');
@@ -349,7 +350,43 @@
                 });
                 console.log(objecDataCriteriaedit);
             });
-            $('#txtQuota,#quota,#serviceValue').on("keyup",function( event ){
+            $('.submit_edit').on('click',function(){
+                var route = '{{ route('save_criteria_funcionarity_edit') }}';
+                var typeAjax = 'POST';
+                var async = async || false;
+                var formDatas = new FormData();
+                formDatas.append('sale_id',$('#date_table_ppto').val());
+                formDatas.append('objecDataCriteriaedit',JSON.stringify(objecDataCriteriaedit));
+                $.ajax({
+                    url: route,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    cache: false,
+                    type: typeAjax,
+                    contentType: false,
+                    data: formDatas,
+                    processData: false,
+                    async: async,
+                    beforeSend: function () {
+                    },
+                    success: function (response, xhr, request){
+                        tblPptoFuncionarity.ajax.reload();
+                        swal("Registrado", "Se ha agregado criterios al ppto de venta.", "success");
+                        $('.checkCriteriaedit').iCheck('uncheck');
+                        $(".inputCriteriaedit").val('');
+                        objecDataCriteriaedit=[];
+                        $('.show_table_criteria').removeClass('hidden');
+                        $('.show_table_ppto').addClass('hidden');
+                        $('#tblPptoFuncionarityDiv').removeClass('hidden');
+                        $('#tblCriteria_edit').addClass('hidden');
+                        $('.button_submit_edit').addClass('hidden');
+                    },
+                    error: function (response, xhr, request) {
+                        swal("Error", "algo salio mal.", "error");
+                        objecDataCriteria=[]
+                    }
+                });
+            });
+            $('.inputCriteriaeditPercen,#percentage_edit').on("keyup",function( event ){
                 var selection = window.getSelection().toString();
                 if ( selection !== '' ) return;
                 if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 )  return;
@@ -358,12 +395,28 @@
                 var input = input.replace(/[\D\s\._\-]+/g, "");
                 input = input ? parseInt( input, 10 ) : 0;
                 $this.val( function() {
-                    return ( input === 0 ) ? "" : input.toLocaleString( "es" );
+                    return ( input === 0 ) ? "" : input.toLocaleString( "es" )+'%';
+                } );
+            });
+            $('.inputCriteriaeditGoal,#budget_edit,#execution_edit').on("keyup",function( event ){
+                var selection = window.getSelection().toString();
+                if ( selection !== '' ) return;
+                if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 )  return;
+                var $this = $( this );
+                var input = $this.val();
+                var input = input.replace(/[\D\s\._\-]+/g, "");
+                input = input ? parseInt( input, 10 ) : 0;
+                $this.val( function() {
+                    return ( input === 0 ) ? "" : '$'+input.toLocaleString( "es" );
                 } );
             });
             $('.i-checksedit').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green'
+            });
+            $('.createPpto').on('click',function(){
+                var route = '{{route('ppto_sale_ajax',$funcionarity->id)}}';
+                $("#content-ajax").load(route);
             });
         });
     </script>
