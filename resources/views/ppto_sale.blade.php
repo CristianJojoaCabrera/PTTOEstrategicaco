@@ -1,12 +1,10 @@
 @extends('layouts.home')
-
 @section('title', 'Inicio')
 @section('css')
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Presupuesto de Ventas</h2>
@@ -33,7 +31,6 @@
             </label>
             <br>
         </div>
-
         <div class="row">
             <br>
             <div class="form-group col-lg-4">
@@ -63,10 +60,6 @@
                 <input type="text" class="form-control input-sm" name="basic_salary" id="basic_salary" value="{{$funcionarity->basic_salary}}">
             </div>
         </div>
-
-
-
-
     </div>
     <div class="ibox-content m-b-sm border-bottom">
         <div class="row">
@@ -86,8 +79,7 @@
         <div class="row">
             <br>
             <div class="col-lg-12">
-
-                <div class="table-responsive col-md-10 col-md-offset-1">
+                <div class="table-responsive col-md-10 col-md-offset-1 hidden">
                     <table id="tblCriteria" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
@@ -121,10 +113,8 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('javascript')
-
     <!-- Toastr script -->
     <script src="{{ asset('js/plugins/toastr/toastr.min.js')}}"></script>
     <!--sweet-->
@@ -159,13 +149,13 @@
                         }else{
                             $('.sale').addClass('hidden');
                             $('.submit').removeClass('hidden');
+                            $('.table-responsive').removeClass('hidden');
                         }
                     },
                     error: function (response, xhr, request) {
                     }
                 });
             });
-
             $('.checkCriteria').on('ifChecked', function(event){
                 var idCriteria = $(this).data('id_checkcriteria');
                 var goal = '#goal'+idCriteria;
@@ -177,14 +167,12 @@
                     percentage :percentage,
                     budget :goal
                 });
-                console.log(objecDataCriteria);
             });
             $('.checkCriteria').on('ifUnchecked', function(event){
                 var id_checkcriteria = $(this).data('id_checkcriteria');
                 objecDataCriteria =   objecDataCriteria.filter(function(idCriteria) {
                     return idCriteria.idCriteria != id_checkcriteria;
                 });
-                console.log(objecDataCriteria);
             });
             $('.submit').on('click',function(){
                 var funcionarity_id = '{{$funcionarity->id}}';
@@ -221,9 +209,7 @@
                     }
                 });
             });
-
             $('.editPpto').on('click',function(){
-                console.log('editar');
                 var route = '{{route('ppto_sale_edit',$funcionarity->id)}}';
                 $("#content-ajax").load(route);
             });
@@ -251,7 +237,6 @@
                     return ( input === 0 ) ? "" : '$'+input.toLocaleString( "es" );
                 } );
             });
-
         });
     </script>
 @endsection

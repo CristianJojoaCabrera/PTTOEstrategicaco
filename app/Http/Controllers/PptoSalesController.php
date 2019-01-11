@@ -6,6 +6,7 @@ use App\Criteria;
 use App\Funcionarity;
 use App\PptoSales;
 use App\Sales;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
@@ -15,7 +16,6 @@ class PptoSalesController extends Controller
 {
     //
     public function ppto_sale(Request $request,$funcionarity_id){
-
 
         $funcionarity = Funcionarity::find($funcionarity_id);
         $criterias = Criteria::all();
@@ -54,7 +54,8 @@ class PptoSalesController extends Controller
 
     public function ppto_sale_edit(Request $request,$funcionarity_id){
         $funcionarity = Funcionarity::find($funcionarity_id);
-        $sales = Sales::where('funcionarity_id',$funcionarity_id)->get();
+        $sales = Sales::where('funcionarity_id',$funcionarity_id)
+            ->orderBy('date', 'desc')->get();
         $criterias = Criteria::all();
         $arrayDates = array();
         Date::setLocale('es');
@@ -92,10 +93,15 @@ class PptoSalesController extends Controller
                 return '$'.$budget;
             })
             ->addColumn('accumulated',function ($ppto_sale_funcionarity)use($sale_id,$funcionarity_id){
-                $accumulated = PptoSales::whereHas('sales',function ($query)use($sale_id,$ppto_sale_funcionarity,$funcionarity_id) {
+                $dateStart = Carbon::parse($ppto_sale_funcionarity->sales->date);
+                $dateStart = $dateStart->subYear();
+                $year = $dateStart->year;
+                $dateStart = Carbon::create($year, 1, 1);
+                $accumulated = PptoSales::whereHas('sales',function ($query)use($sale_id,$ppto_sale_funcionarity,$funcionarity_id,$dateStart) {
                     $query->where([
                         ['funcionarity_id', '=', $funcionarity_id],
-                        ['date', '<=', $ppto_sale_funcionarity->sales->date]
+                        ['date', '<=', $ppto_sale_funcionarity->sales->date],
+                        ['date', '>=', $dateStart]
                     ]);
                 })->where('criteria_id',$ppto_sale_funcionarity->criteria_id)->sum('budget');
                 $ppto_sale_funcionarity = PptoSales::find($ppto_sale_funcionarity->id);
@@ -110,10 +116,15 @@ class PptoSalesController extends Controller
                 return '$'.$execution;
             })
             ->addColumn('accumulated_execution',function ($ppto_sale_funcionarity)use($sale_id,$funcionarity_id){
-                $accumulated_execution = PptoSales::whereHas('sales',function ($query)use($sale_id,$ppto_sale_funcionarity,$funcionarity_id) {
+                $dateStart = Carbon::parse($ppto_sale_funcionarity->sales->date);
+                $dateStart = $dateStart->subYear();
+                $year = $dateStart->year;
+                $dateStart = Carbon::create($year, 1, 1);
+                $accumulated_execution = PptoSales::whereHas('sales',function ($query)use($sale_id,$ppto_sale_funcionarity,$funcionarity_id,$dateStart) {
                     $query->where([
                         ['funcionarity_id', '=', $funcionarity_id],
-                        ['date', '<=', $ppto_sale_funcionarity->sales->date]
+                        ['date', '<=', $ppto_sale_funcionarity->sales->date],
+                        ['date', '>=', $dateStart]
                     ]);
                 })->where('criteria_id',$ppto_sale_funcionarity->criteria_id)->sum('execution');
                 $ppto_sale_funcionarity = PptoSales::find($ppto_sale_funcionarity->id);
@@ -131,10 +142,15 @@ class PptoSalesController extends Controller
                 return $execution_percentage_val.'%';
             })
             ->addColumn('accumulated_percentage',function ($ppto_sale_funcionarity)use($sale_id,$funcionarity_id){
-                $accumulated_percentage = PptoSales::whereHas('sales',function ($query)use($sale_id,$ppto_sale_funcionarity,$funcionarity_id) {
+                $dateStart = Carbon::parse($ppto_sale_funcionarity->sales->date);
+                $dateStart = $dateStart->subYear();
+                $year = $dateStart->year;
+                $dateStart = Carbon::create($year, 1, 1);
+                $accumulated_percentage = PptoSales::whereHas('sales',function ($query)use($sale_id,$ppto_sale_funcionarity,$funcionarity_id,$dateStart) {
                     $query->where([
                         ['funcionarity_id', '=', $funcionarity_id],
-                        ['date', '<=', $ppto_sale_funcionarity->sales->date]
+                        ['date', '<=', $ppto_sale_funcionarity->sales->date],
+                        ['date', '>=', $dateStart]
                     ]);
                 })->where('criteria_id',$ppto_sale_funcionarity->criteria_id)->sum('execution_percentage');
                 $ppto_sale_funcionarity = PptoSales::find($ppto_sale_funcionarity->id);

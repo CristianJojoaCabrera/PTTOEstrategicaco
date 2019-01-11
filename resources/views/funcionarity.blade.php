@@ -139,8 +139,8 @@
                                     <div class="form-group col-md-3">
                                         <label>mes-año</label>
                                         <select class="form-control" id="">
-                                            <option value="mes">mes</option>
-                                            <option value="año">año</option>
+                                            <option value="mes">mes(es)</option>
+                                            <option value="año">año(s)</option>
                                         </select>
                                     </div>
                                 </div>

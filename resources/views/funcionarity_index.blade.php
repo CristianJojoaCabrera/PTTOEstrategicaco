@@ -33,8 +33,8 @@
                     <table id="tblFuncionarity" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
                             <th>Tipo Identificación</th>
                             <th>Número</th>
                             <th>Telefono</th>
@@ -44,7 +44,6 @@
                         </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -93,7 +92,7 @@
                 'columns' : [
                     {data: 'name'},
                     {data: 'last_name'},
-                    {data: 'document_type'},
+                    {data: 'document_type',width:'8%'},
                     {data: 'document_number'},
                     {data: 'phone'},
                     {data: 'position'},
