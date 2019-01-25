@@ -6,8 +6,6 @@
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-
-
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-7">
@@ -172,7 +170,6 @@
     </div>
 @endsection
 @section('javascript')
-
     <!-- Steps -->
     <script src="{{ asset('js/plugins/steps/jquery.steps.min.js') }}"></script>
     <!--sweet-->
@@ -271,9 +268,6 @@
                     }
                 }
             });
-
-            //$("#form").steps("getCurrentIndex");
-
             if ( $("#form").steps("getCurrentIndex") == 0 ) {
                 $('.input-group.date').datepicker({
                     todayBtn: "linked",
@@ -285,7 +279,6 @@
                     autoclose: true
                 });
             }
-
             $('#basic_salary').on("keyup",function( event ){
                 var selection = window.getSelection().toString();
                 if ( selection !== '' ) return;

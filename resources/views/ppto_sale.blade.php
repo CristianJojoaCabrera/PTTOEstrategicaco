@@ -5,6 +5,7 @@
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 @endsection
 @section('content')
+
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Presupuesto de Ventas</h2>
@@ -70,12 +71,24 @@
                     <input type="text" name="date_ppto_sale" id="date_ppto_sale" class="form-control input-sm">
                 </div>
             </div>
+
             <div class="form-group col-md-2 col-md-offset-1">
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <a title="Aplica Ppto" class="btn btn-sm btn-primary sale">Ingresar<i class=""></i></a>
-                <a title="Finalizar Ppto" class="btn btn-sm btn-success submit hidden">Finalizar<i class=""></i></a>
+
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-2 progress progress-striped active">
+                <div style="text-align: center" id="progressPercent" style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-danger">
+                    <span style="text-align: center" id='progressPercentVal'>0% Asignado</span>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <a title="Finalizar Ppto" class="btn btn-sm btn-success submit hidden">Finalizar Presupuesto de Venta<i class=""></i></a>
+        </div>
+
         <div class="row">
             <br>
             <div class="col-lg-12">
@@ -83,29 +96,45 @@
                     <table id="tblCriteria" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
+                            <th style="text-align: center">Check</th>
                             <th>Criterio</th>
-                            <th>Porcentaje</th>
+                            <th>Peso</th>
                             <th>Meta</th>
-                            <th>Check</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($criterias as $criteria)
-                            <tr id="tr{{$criteria->id}}">
-                                <td>
-                                    <input size="35" id ="criteria{{$criteria->id}}" value="{{$criteria->name}}" disabled>
-                                </td>
-                                <td>
-                                    <input class="inputCriteriaPercentage" id ="percentage{{$criteria->id}}" name="percentage{{$criteria->id}}" value="">
-                                </td>
-                                <td>
-                                    <input class="inputCriteriaGoal" id ="goal{{$criteria->id}}" name="goal{{$criteria->id}}" value="">
-                                </td>
-                                <td>
-                                    <div align="center" class="i-checks"><input class="checkCriteria" data-id_checkCriteria='{{$criteria->id}}' type="checkbox" id="check{{$criteria->id}}" value=""></div>
-
-                                </td>
-                            </tr>
+                            @if($criteria->name === 'Visitas realizadas')
+                                <tr id="tr{{$criteria->id}}">
+                                    <td>
+                                        <div align="center" class="i-checks"><input class="checkCriteria" data-id_checkCriteria='{{$criteria->id}}' type="checkbox" id="check{{$criteria->id}}" value=""></div>
+                                    </td>
+                                    <td>
+                                        <input size="35" id ="criteria{{$criteria->id}}" value="{{$criteria->name}}" disabled>
+                                    </td>
+                                    <td>
+                                        <input class="inputCriteriaVisita" id ="percentage{{$criteria->id}}" name="percentage{{$criteria->id}}" value="">
+                                    </td>
+                                    <td>
+                                        <input class="inputCriteriaGoal" id ="goal{{$criteria->id}}" name="goal{{$criteria->id}}" value="">
+                                    </td>
+                                </tr>
+                            @else
+                                <tr id="tr{{$criteria->id}}">
+                                    <td>
+                                        <div align="center" class="i-checks"><input class="checkCriteria" data-id_checkCriteria='{{$criteria->id}}' type="checkbox" id="check{{$criteria->id}}" value=""></div>
+                                    </td>
+                                    <td>
+                                        <input size="35" id ="criteria{{$criteria->id}}" value="{{$criteria->name}}" disabled>
+                                    </td>
+                                    <td>
+                                        <input class="inputCriteriaPercentage" id ="percentage{{$criteria->id}}" name="percentage{{$criteria->id}}" value="">
+                                    </td>
+                                    <td>
+                                        <input class="inputCriteriaGoal" id ="goal{{$criteria->id}}" name="goal{{$criteria->id}}" value="">
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                         </tbody>
                     </table>
@@ -125,6 +154,39 @@
     <script>
         $(document).ready(function(){
             var objecDataCriteria=[] ;
+            var updateProgressBar = (id_checkcriteria)=>{
+                let sumatoriapeso = 0;
+                objecDataCriteria.forEach(function(value,index){
+                    let pesoVal = 0;
+                    if(value.percentage != ''){
+                        pesoVal = parseInt(((value.percentage).replace('%','')));
+                        sumatoriapeso += pesoVal;
+                    }
+                });
+                if(sumatoriapeso>100){
+                    let check = '#check'+id_checkcriteria;
+                    $(check).iCheck('uncheck');
+                    swal({
+                            title: "Ha superado el 100% ",
+                            text: "debe ajustar los porcentajes",
+                            type: "warning",
+                            confirmButtonText: "ok",
+                            closeOnConfirm: true
+                        },
+                        function(){
+                            $(check).iCheck('update');
+                        });
+                }else{
+                    if(sumatoriapeso<=50)$('#progressPercent').removeClass('progress-bar-warning progress-bar-primary').addClass('progress-bar-danger');
+                    if(sumatoriapeso>=51 && sumatoriapeso<=99)$('#progressPercent').removeClass('progress-bar-danger progress-bar-primary').addClass('progress-bar-warning');
+                    if(sumatoriapeso == 100){
+                        $('#progressPercent').removeClass('progress-bar-danger progress-bar-warning').addClass('progress-bar-primary');
+                    }
+                    $('#progressPercent').css("width", sumatoriapeso+"%");
+                    $('#progressPercentVal').text(`${sumatoriapeso}% Asignado`);
+                }
+                if(sumatoriapeso >= 100){$('.submit').removeClass('hidden');}else{$('.submit').addClass('hidden');}
+            };
             $('.input-group.date').datepicker({
                 format: "yyyy-mm",
                 viewMode: "months",
@@ -135,44 +197,93 @@
                 radioClass: 'iradio_square-green'
             });
             $('.sale').on('click',function(){
-                var date = $('#date_ppto_sale').val()+'-01';
-                var funcionarity_id = '{{$funcionarity->id}}';
-                var route = '{{route('exist_date_ptto_sale')}}'+'/'+funcionarity_id+'/'+date;
-                $.ajax({
-                    url: route,
-                    type: 'GET',
-                    beforeSend: function () {
-                    },
-                    success: function (response, xhr, request) {
-                        if(response){
-                            swal("", "Esta Fecha ya existe.", "info");
-                        }else{
-                            $('.sale').addClass('hidden');
-                            $('.submit').removeClass('hidden');
-                            $('.table-responsive').removeClass('hidden');
+                if(Object.keys(objecDataCriteria).length >0){
+                    swal({
+                            title: "Esta Seguro de Ingresar otra fecha",
+                            text: "La fecha tiene criterios asignados y se borraran",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonClass: "btn-danger",
+                            confirmButtonText: "Si, Continuar",
+                            cancelButtonText: "Cancelar",
+                            closeOnConfirm: true,
+                        },
+                        function(isConfirm) {
+                            if (isConfirm) {
+                                $('#progressPercent').css("width", 0+"%");
+                                $('#progressPercentVal').text(`0% Asignado`);
+                                $('.checkCriteria').iCheck('uncheck');
+                                $(".inputCriteriaPercentage,.inputCriteriaGoal,.inputCriteriaVisita").val('');
+                                $("#date_ppto_sale").val('');
+                                $('.submit').addClass('hidden');
+                                $('.sale').removeClass('hidden');
+                            }
+                        });
+                }else{
+                    var date = $('#date_ppto_sale').val()+'-01';
+                    var funcionarity_id = '{{$funcionarity->id}}';
+                    var route = '{{route('exist_date_ptto_sale')}}'+'/'+funcionarity_id+'/'+date;
+                    $.ajax({
+                        url: route,
+                        type: 'GET',
+                        beforeSend: function () {
+                        },
+                        success: function (response, xhr, request) {
+                            if(response){
+                                swal("", "Esta Fecha ya existe.", "info");
+                            }else{
+                                $('.table-responsive').removeClass('hidden');
+                            }
+                        },
+                        error: function (response, xhr, request) {
                         }
-                    },
-                    error: function (response, xhr, request) {
-                    }
-                });
+                    });
+                }
+
             });
             $('.checkCriteria').on('ifChecked', function(event){
-                var idCriteria = $(this).data('id_checkcriteria');
-                var goal = '#goal'+idCriteria;
+                let idCriteria = parseInt($(this).data('id_checkcriteria'));
+                let goal = '#goal'+idCriteria;
                 goal = $(goal).val();
-                var percentage = '#percentage'+idCriteria;
+                let percentage = '#percentage'+idCriteria;
                     percentage = $(percentage).val();
                 objecDataCriteria.push({
                     idCriteria :idCriteria ,
                     percentage :percentage,
-                    budget :goal
+                    budget :goal,
+                    updatePercentage:function(percentage){
+                        this.percentage = percentage;
+                    },
+                    updateBudget:function(budget){
+                        this.budget = budget;
+                    },
                 });
+                updateProgressBar(idCriteria);
+
             });
             $('.checkCriteria').on('ifUnchecked', function(event){
                 var id_checkcriteria = $(this).data('id_checkcriteria');
                 objecDataCriteria =   objecDataCriteria.filter(function(idCriteria) {
                     return idCriteria.idCriteria != id_checkcriteria;
                 });
+                $('#check2').iCheck('update');
+                let sumatoriapeso = 0;
+                objecDataCriteria.forEach(function(value,index){
+                    let pesoVal = 0;
+                    if(value.percentage != ''){
+                        pesoVal = parseInt(((value.percentage).replace('%','')));
+                        sumatoriapeso += pesoVal;
+                    }
+                });
+                if(sumatoriapeso<=50)$('#progressPercent').removeClass('progress-bar-warning progress-bar-primary').addClass('progress-bar-danger');
+                if(sumatoriapeso>=51 && sumatoriapeso<=99)$('#progressPercent').removeClass('progress-bar-danger progress-bar-primary').addClass('progress-bar-warning');
+                if(sumatoriapeso == 100){
+                    $('#progressPercent').removeClass('progress-bar-danger progress-bar-warning').addClass('progress-bar-primary');
+                }
+                $('#progressPercent').css("width", sumatoriapeso+"%");
+                $('#progressPercentVal').text(`${sumatoriapeso}% Asignado`);
+                if(sumatoriapeso >= 100){$('.submit').removeClass('hidden');}else{$('.submit').addClass('hidden');}
+
             });
             $('.submit').on('click',function(){
                 var funcionarity_id = '{{$funcionarity->id}}';
@@ -197,7 +308,7 @@
                     success: function (response, xhr, request){
                         swal("Registrado", "Se ha registrado el ppto venta.", "success");
                         $('.checkCriteria').iCheck('uncheck');
-                        $(".inputCriteriaPercentage,.inputCriteriaGoal").val('');
+                        $(".inputCriteriaPercentage,.inputCriteriaGoal,.inputCriteriaVisita").val('');
                         $("#date_ppto_sale").val('');
                         $('.submit').addClass('hidden');
                         $('.sale').removeClass('hidden');
@@ -224,6 +335,7 @@
                 $this.val( function() {
                     return ( input === 0 ) ? "" : input.toLocaleString( "es" )+'%';
                 } );
+
             });
             $('.inputCriteriaGoal').on("keyup",function( event ){
                 var selection = window.getSelection().toString();
@@ -236,6 +348,60 @@
                 $this.val( function() {
                     return ( input === 0 ) ? "" : '$'+input.toLocaleString( "es" );
                 } );
+            });
+            $(".inputCriteriaPercentage").focusout(function(){
+                let thisPeso = $(this).val();
+                let idCriteria = parseInt((($(this).attr('id')).replace('percentage','')));
+                let index = objecDataCriteria.findIndex(x => x.idCriteria === idCriteria);
+                if(index >= 0){
+                    let tempPeso = objecDataCriteria[index].percentage;
+                    if(objecDataCriteria[index].percentage != thisPeso){
+                        objecDataCriteria[index].updatePercentage(thisPeso);
+                        let sumatoriapeso = 0;
+                        objecDataCriteria.forEach(function(value,index){
+                            let pesoVal = 0;
+                            if(value.percentage != ''){
+                                pesoVal = parseInt(((value.percentage).replace('%','')));
+                                sumatoriapeso += pesoVal;
+                            }
+                        });
+                        if(sumatoriapeso>100){
+                            $(this).val(tempPeso);
+                            objecDataCriteria[index].updatePercentage(tempPeso);
+                            let check = '#check'+objecDataCriteria[index].idCriteria;
+                            if(tempPeso == '')$(check).iCheck('uncheck');
+                            swal({
+                                    title: "Ha superado el 100% ",
+                                    text: "debe ajustar los porcentajes",
+                                    type: "warning",
+                                    confirmButtonText: "ok",
+                                    closeOnConfirm: true
+                                },
+                                function(){
+                                    $(check).iCheck('update');
+                                });
+                        }else{
+                            if(sumatoriapeso<=50)$('#progressPercent').removeClass('progress-bar-warning progress-bar-primary').addClass('progress-bar-danger');
+                            if(sumatoriapeso>=51 && sumatoriapeso<=99)$('#progressPercent').removeClass('progress-bar-danger progress-bar-primary').addClass('progress-bar-warning');
+                            if(sumatoriapeso == 100){
+                                $('#progressPercent').removeClass('progress-bar-danger progress-bar-warning').addClass('progress-bar-primary');
+                            }
+                            $('#progressPercent').css("width", sumatoriapeso+"%");
+                            $('#progressPercentVal').text(`${sumatoriapeso}% Asignado`);
+                        }
+                        if(sumatoriapeso >= 100){$('.submit').removeClass('hidden');}else{$('.submit').addClass('hidden');}
+                    }
+                }
+            });
+            $(".inputCriteriaGoal").focusout(function(){
+                let thisGoal = $(this).val();
+                let idCriteria = parseInt((($(this).attr('id')).replace('goal','')));
+                let index = objecDataCriteria.findIndex(x => x.idCriteria === idCriteria);
+                if(index >= 0){
+                    if(objecDataCriteria[index].budget != thisGoal){
+                        objecDataCriteria[index].updateBudget(thisGoal);
+                    }
+                }
             });
         });
     </script>

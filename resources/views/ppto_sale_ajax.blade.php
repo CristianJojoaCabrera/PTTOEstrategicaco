@@ -197,7 +197,6 @@
                     }
                 });
             });
-
             $('.editPpto').on('click',function(){
                 console.log('editar');
                 var route = '{{route('ppto_sale_edit',$funcionarity->id)}}';
@@ -227,6 +226,5 @@
                     return ( input === 0 ) ? "" : '$'+input.toLocaleString( "es" );
                 } );
             });
-
         });
     </script>

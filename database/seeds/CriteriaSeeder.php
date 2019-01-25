@@ -12,12 +12,12 @@ class CriteriaSeeder extends Seeder
     public function run()
     {
         $criterias = [
+            ['name'=>'Comisión'],
             ['name'=>'Ventas Efectivas'],
             ['name'=>'Ventas nuevos clientes'],
             ['name'=>'Visitas realizadas'],
             ['name'=>'Monto de las ofertas VS presupuesto'],
             ['name'=>'Ingresos efectivos'],
-            ['name'=>'Comisión'],
             ['name'=>'otro'],
 
         ];
